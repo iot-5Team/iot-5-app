@@ -12,7 +12,7 @@ import { actionChangeCategory } from "../../../reduxContainer/actions/categoryAc
 import {fullWidth} from "../../devices.js"; //디바이스 화면크기 관련 js파일
 
 const category_itme = [
-  { id: 1, title: "인기" },
+  { id: 1, title: "인기도서" },
   { id: 2, title: "신작" },
   { id: 3, title: "판타지" },
   { id: 4, title: "현판" },

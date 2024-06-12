@@ -9,6 +9,8 @@ import Home from "./constructScreens/Home";
 import Genre from "./constructScreens/Genre";
 import Setting from "./constructScreens/Settings";
 
+import BookDescription from "./constructScreens/bookDescription/BookDescription";
+
 const Tabs = createBottomTabNavigator(); //dsaf
 const Stack = createNativeStackNavigator(); //
 
@@ -18,6 +20,7 @@ export default function StackScreens() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="account" component={Account} />
         <Stack.Screen name="Tab" component={TabScreens} />
+        <Stack.Screen name="bookDes" component={BookDescription}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -28,7 +31,7 @@ export function TabScreens() {
     <Tabs.Navigator
       screenOptions={{
         headerShown: false,
-
+        tabBarShowLabel:false,
         tabBarActiveTintColor: "#fff", // 활성 탭 아이템의 색상
         tabBarInactiveTintColor: "black", // 비활성 탭 아이템의 색상
         // tabBarStyle:{height:80,}

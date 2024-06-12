@@ -8,9 +8,10 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import React, { useState } from "react";
-import { getStatusBarHeight } from "react-native-status-bar-height";
-
+import React, { useEffect, useState } from "react";
+import {host, SPport,API_URL} from '@env'
+import { useNavigation } from "@react-navigation/native";
+import { useSelector, useDispatch } from "react-redux";
 import { bookImage, icon } from "../../../../assets/images.js";
 import Banner from "../../Banner";
 import {
@@ -19,6 +20,7 @@ import {
   bookItem_height,
 } from "../../devices.js"; //디바이스 화면크기 관련 js파일
 import Category from "../categories/Category.js";
+import { actionAddBooks } from "../../../reduxContainer/actions/addbooksAction.js";
 
 //책 리스트
 const books = [
@@ -35,20 +37,66 @@ const books = [
 
 export default function Home({ navigation }) {
   const insets = useSafeAreaInsets();
+  const dispatch = useDispatch();
+  const setUpBookData =(books)=>{
+    console.log("책은 실행됬음", books);
+    dispatch(actionAddBooks(books));
+  }
+  const confirm = useSelector((state)=>state.initialBooks)
+  const [bookList, setBookList] =useState([]);
+console.log("데이터 입니다 ===============",confirm);
+
+  const callAllTheBooks = async () => {
+    //console.log(`${API_URL}/book/all`); 확인용 데이터셋
+    try {
+      //http://192.168.0.77:8080/book/all
+      const response = await fetch(`http://${host}:${SPport}/book/all`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok: ' + response.statusText);
+      }
+      const data = await response.json();
+      //console.log(data);// response 데이터 출력
+      setBookList(data);// 북리스트에 저장
+      setUpBookData(data);
+    } catch (error) {
+      console.log('Error fetching data:', error);
+    }
+  }
+  useEffect(()=>{
+    callAllTheBooks();
+  },[])
+  function LoadingBookList(){
+    return(
+    <SafeAreaView style={{alignItems:"center", justifyContent:"flex-start"}}>
+      <Banner />
+      <Category />
+      <View style={{justifyContent:"center", justifyContent:"center"}}>
+        <Text>책을 로딩하고 있습니다.</Text>
+     </View>
+    </SafeAreaView>
+    )
+  }
+    
+  
+  
 
   return (
     <View style={styles.home_container}>
-      <FlatList
-        ListHeaderComponent={rednerHeader}
-        data={books}
-        renderItem={({ item }) => (
-          <BookItem title={item.title} cover={item.cover} />
-        )}
-        keyExtractor={(item) => item.id}
-        numColumns={3}
-        contentContainerStyle={{ paddingBottom: insets.bottom + 20 }}
-        style={{ alignContent: "space-btween" }}
-      ></FlatList>
+      { bookList.length == 0 ? LoadingBookList():(
+         <FlatList
+         ListHeaderComponent={rednerHeader}
+         data={bookList}
+         renderItem={({ item }) => (
+           <BookItem title={item.title} author={item.author}  />
+         )}
+         keyExtractor={(item) => item.bookid}
+         numColumns={3}
+         contentContainerStyle={{ paddingBottom: insets.bottom + 20 }}
+         style={{ alignContent: "space-btween" }}
+       ></FlatList>
+      )
+      }
+     
     </View>
   );
 }
@@ -75,8 +123,12 @@ const rednerHeader = () => (
 );
 
 //책 구성 레이아웃
-const BookItem = ({ title, cover }) => (
-  <TouchableOpacity>
+const BookItem = ({ title,author}) => {
+  const navigation = useNavigation();
+  return (
+  <TouchableOpacity onPress={()=>{
+    navigation.navigate('bookDes', {bookName: title})
+  }}>
     <View
       style={{
         width: bookItem_width,
@@ -86,14 +138,22 @@ const BookItem = ({ title, cover }) => (
         margin: 5,
       }}
     >
-      <Image
-        source={cover}
-        style={{
-          width: bookItem_width,
-          height: bookItem_height,
-          borderRadius: 5,
-        }}
-      />
+      <View style={{ 
+        backgroundColor:"#EDEDED",
+        width: bookItem_width,
+        height: bookItem_height,
+        borderRadius: 5,
+        alignItems:"center", justifyContent:"center"
+        }}>
+        <Image
+          source={icon.noim}
+          style={{
+            width:40,
+            height:40,
+          }}
+        />
+      </View>
+
       <View style={{ width: bookItem_width, top: 5, height: 16 }}>
         {/*책제목 */}
         <Text style={{ fontSize: 12, fontWeight: "bold" }}>{title}</Text>
@@ -106,12 +166,12 @@ const BookItem = ({ title, cover }) => (
           flexDirection: "row",
         }}
       >
-        <Image source={icon.star} style={{ width: 10, height: 10 }} />
+        
         <Text style={{ width: bookItem_width, color: "grey", fontSize: 10 }}>
-          {" "}
-          평점/10.0{" "}
+          {author}
         </Text>
       </View>
     </View>
   </TouchableOpacity>
-);
+  )
+};

@@ -17,5 +17,5 @@ export const bannerImage = {
 export const icon = {
   star: require("./icons/star.png"), //평점 아이콘
   riab: require("./icons/right_angle_bracket.png"), //이동 이미지
-  noim: require("./icons/not.png"), //책이 없을 때 이미지
+  noim: require("./icons/noimage.png"), //책이 없을 때 이미지
 };
