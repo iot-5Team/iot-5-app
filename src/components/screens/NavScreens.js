@@ -9,7 +9,8 @@ import Home from "./constructScreens/Home";
 import Genre from "./constructScreens/Genre";
 import Setting from "./constructScreens/Settings";
 
-import BookDescription from "./constructScreens/bookDescription/BookDescription";
+import BookDescription from "./bookDescription/BookDescription";
+import BookReadPage from "./bookDescription/BookReadPage";
 
 const Tabs = createBottomTabNavigator(); //dsaf
 const Stack = createNativeStackNavigator(); //
@@ -21,6 +22,7 @@ export default function StackScreens() {
         <Stack.Screen name="account" component={Account} />
         <Stack.Screen name="Tab" component={TabScreens} />
         <Stack.Screen name="bookDes" component={BookDescription}/>
+        <Stack.Screen name="bookRead" component={BookReadPage}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

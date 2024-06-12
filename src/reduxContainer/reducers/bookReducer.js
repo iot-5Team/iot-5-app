@@ -1,7 +1,9 @@
-const initialBooks= []
+const initialBooks= {
+    books:[]
+}
 
 const bookListAll= (state = initialBooks, action) =>{
-    switch(action.type){
+    switch (action.type) {
         case "allAddBooks":
             return{
                 ...state,

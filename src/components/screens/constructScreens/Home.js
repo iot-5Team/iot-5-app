@@ -6,6 +6,7 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  ActivityIndicator
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import React, { useEffect, useState } from "react";
@@ -18,6 +19,8 @@ import {
   bookView_height,
   bookItem_width,
   bookItem_height,
+  fullWidth,
+  fullHeight,
 } from "../../devices.js"; //디바이스 화면크기 관련 js파일
 import Category from "../categories/Category.js";
 import { actionAddBooks } from "../../../reduxContainer/actions/addbooksAction.js";
@@ -39,12 +42,13 @@ export default function Home({ navigation }) {
   const insets = useSafeAreaInsets();
   const dispatch = useDispatch();
   const setUpBookData =(books)=>{
-    console.log("책은 실행됬음", books);
     dispatch(actionAddBooks(books));
   }
-  const confirm = useSelector((state)=>state.initialBooks)
+  const allBooks = useSelector((state) => state.bookListAll.books);
+   //카테고리 바
+   const categoryState = useSelector((state) => state.postCategoryReducer.categoryState);
+  
   const [bookList, setBookList] =useState([]);
-console.log("데이터 입니다 ===============",confirm);
 
   const callAllTheBooks = async () => {
     //console.log(`${API_URL}/book/all`); 확인용 데이터셋
@@ -62,40 +66,63 @@ console.log("데이터 입니다 ===============",confirm);
       console.log('Error fetching data:', error);
     }
   }
+  //서버에서 책 데이터 가져오는 마운트 함수 
   useEffect(()=>{
     callAllTheBooks();
   },[])
+  //책 로딩이 아직 안됐을 때 
   function LoadingBookList(){
     return(
-    <SafeAreaView style={{alignItems:"center", justifyContent:"flex-start"}}>
-      <Banner />
-      <Category />
-      <View style={{justifyContent:"center", justifyContent:"center"}}>
+    <View style={{alignItems:"center", justifyContent:"flex-start"}}>      
+      <Banner/>
+      <View style={{width:fullWidth, height:50}}>
+        <Category />
+      </View>
+      <View style={{justifyContent:"center", alignItems:"center", height:fullHeight*0.4}}>
         <Text>책을 로딩하고 있습니다.</Text>
      </View>
-    </SafeAreaView>
+    </View>
     )
   }
+  function RenderBookItemList(){
+    if(categoryState != 'AI'){
+      const categoryBooks = allBooks.filter(book => book.theme == categoryState);
+      console.log('실행 데이터 ',categoryBooks);
+      return(
+        <FlatList
+        ListHeaderComponent={rednerHeader}
+        data={categoryBooks}
+        renderItem={({ item }) => (
+          <BookItem book={item}/>
+        )}
+        keyExtractor={(item) => item.bookid}
+        numColumns={3}
+        contentContainerStyle={{ paddingBottom: insets.bottom + 20 }}
+        style={{ alignContent: "space-btween" }}
+      ></FlatList>
+      )
+    } 
     
-  
-  
+    
+    
+    return(
+      <FlatList
+      ListHeaderComponent={rednerHeader}
+      data={bookList}
+      renderItem={({ item }) => (
+        <BookItem book={item}/>
+      )}
+      keyExtractor={(item) => item.bookid}
+      numColumns={3}
+      contentContainerStyle={{ paddingBottom: insets.bottom + 20 }}
+      style={{ alignContent: "space-btween" }}
+    ></FlatList>
+    )
+  }
 
   return (
     <View style={styles.home_container}>
-      { bookList.length == 0 ? LoadingBookList():(
-         <FlatList
-         ListHeaderComponent={rednerHeader}
-         data={bookList}
-         renderItem={({ item }) => (
-           <BookItem title={item.title} author={item.author}  />
-         )}
-         keyExtractor={(item) => item.bookid}
-         numColumns={3}
-         contentContainerStyle={{ paddingBottom: insets.bottom + 20 }}
-         style={{ alignContent: "space-btween" }}
-       ></FlatList>
-      )
-      }
+      { bookList.length == 0 ? LoadingBookList():RenderBookItemList() }
      
     </View>
   );
@@ -122,12 +149,14 @@ const rednerHeader = () => (
   </>
 );
 
+
 //책 구성 레이아웃
-const BookItem = ({ title,author}) => {
+const BookItem = ({ book }) => {
   const navigation = useNavigation();
+  
   return (
   <TouchableOpacity onPress={()=>{
-    navigation.navigate('bookDes', {bookName: title})
+    navigation.navigate('bookDes', {book: book})
   }}>
     <View
       style={{
@@ -156,7 +185,7 @@ const BookItem = ({ title,author}) => {
 
       <View style={{ width: bookItem_width, top: 5, height: 16 }}>
         {/*책제목 */}
-        <Text style={{ fontSize: 12, fontWeight: "bold" }}>{title}</Text>
+        <Text style={{ fontSize: 12, fontWeight: "bold" }}>{book.title}</Text>
       </View>
       <View
         style={{
@@ -168,7 +197,7 @@ const BookItem = ({ title,author}) => {
       >
         
         <Text style={{ width: bookItem_width, color: "grey", fontSize: 10 }}>
-          {author}
+          {book.author}
         </Text>
       </View>
     </View>

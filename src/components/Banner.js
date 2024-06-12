@@ -4,6 +4,7 @@ import { SliderBox } from "react-native-image-slider-box";// 안나옴 삭제해
 import { bannerImage } from "../../assets/images"; 
 import { View, Image } from "react-native";
 import { ImageSlider } from "react-native-image-slider-banner"; // 동작함 
+import { fullWidth,fullHeight } from './devices';
 
 const Banner = () => {
   const images = [
@@ -18,7 +19,7 @@ const Banner = () => {
   };
 
   return (
-    <View style={{ marginTop: getStatusBarHeight() }}>
+    <View style={{width:fullWidth, height:fullHeight*0.32}}>
     <ImageSlider 
     data={[
         {img: bannerImage.banner1},
@@ -28,8 +29,8 @@ const Banner = () => {
     localImg={true}
     autoPlay={true}
     timer={1500}
-    onItemChanged={(item) => console.log("item", item)}
     closeIconColor="#fff"
+    
 />
     </View>
   );
