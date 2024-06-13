@@ -15,6 +15,7 @@ export const bannerImage = {
   banner3: require("./banner/the_catcher_in_the_rye.jpg"), //아일랜드 쌍둥이
 };
 export const icon = {
+  logo:require("./icons/favicon.png"),
   star: require("./icons/star.png"), //평점 아이콘
   riab: require("./icons/right_angle_bracket.png"), //이동 이미지
   noim: require("./icons/noimage.png"), //책이 없을 때 이미지
