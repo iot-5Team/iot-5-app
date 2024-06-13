@@ -12,7 +12,7 @@ export default function Account({ navigation }) {
   const [pw, setPw] = useState('');
   const dispatch = useDispatch();
   const user = useSelector(state => state.setLoginUserData);
-  // console.log('data',user) //로그인데이터 확인
+  //console.log('data',user) //로그인데이터 확인
   
   useEffect(()=>{
   if(user.userId !=''){

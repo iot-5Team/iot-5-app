@@ -11,6 +11,7 @@ import Setting from "./constructScreens/Settings";
 
 import BookDescription from "./bookDescription/BookDescription";
 import BookReadPage from "./bookDescription/BookReadPage";
+import ShowUser from "./ShowUser";
 
 const Tabs = createBottomTabNavigator(); //dsaf
 const Stack = createNativeStackNavigator(); //
@@ -23,6 +24,7 @@ export default function StackScreens() {
         <Stack.Screen name="Tab" component={TabScreens} />
         <Stack.Screen name="bookDes" component={BookDescription}/>
         <Stack.Screen name="bookRead" component={BookReadPage}/>
+        <Stack.Screen name="userInfo" component={ShowUser}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,11 +1,45 @@
-import { SafeAreaView, View, Text, FlatList, ScrollView, Dimensions,TouchableOpacity, StyleSheet } from "react-native";
-import {
-  fullWidth,
-  fullHeight,
-} from "../../devices.js"; //디바이스 화면크기 관련 js파일
-
+import { useEffect, useState } from "react";
+import { SafeAreaView, View, Text, FlatList, Image,  ScrollView,TouchableOpacity, StyleSheet } from "react-native";
+import { useSelector } from "react-redux";
+import {host, SPport} from '@env';
+import {fullWidth,fullHeight,} from "../../devices.js"; //디바이스 화면크기 관련 js파일
+import { icon } from "../../../../assets/images.js";
+import { useNavigation } from "@react-navigation/native";
 // const membership
 const Setting = () => {
+  const user = useSelector(state => state.setLoginUserData);
+  const [userName, setUserName] = useState('');
+  const [userInfo, setUserInfo] = useState({});
+  
+  const callUserName = async() =>{
+    try{
+      const response  = await fetch(`http://${host}:${SPport}/user-info`,{
+        method:"GET",
+        headers:{
+          'Authorization': `Bearer ${user.accessToken}`
+        }
+      });
+      if(!response.ok){
+        throw new Error ("Network response error status", response.status);
+      }
+      const resData = await response.text();
+      const userData = JSON.parse(resData);
+      setUserInfo(userData);
+      setUserName(userData.nickname);
+    }catch(error){
+      console.error("status error code:",error)
+    }
+  }
+  useEffect(()=>{
+    if(user.userId != ''){
+      callUserName();
+    }
+    
+  },[user]);
+  
+
+
+
   return (
     <SafeAreaView style={{ flex: 1, alignItems:"center"}}>
       <View style={{width:fullWidth*0.9, alignItems:"flex-start"}}>
@@ -13,17 +47,22 @@ const Setting = () => {
         style={{
           fontSize: 20,
           fontWeight: "bold",
+          color:"#937DC2"
         }}
       >
         설정
       </Text>
+      </View>
+      <View style={{height:fullHeight*0.15, alignItems:"center", justifyContent:"center"}}> 
+        <Image source={icon.miml} style={{width: 75, height:75 , borderRadius:25}}/>
+        <Text style={{fontSize:18, fontWeight:"700" }}>{userName}</Text>
       </View>
       <ScrollView>
       <View style={styles.setting_container}>
         <Text style={styles.setting_text}>로그인/회원정보</Text>        
       </View> 
       {/* 로그인/회원정보 설정세션 */}
-      <Membership_setting/> 
+      <Membership_setting info={userInfo}/> 
       <View style={styles.setting_container}>
         <Text style={styles.setting_text}>알림 설정</Text>        
       </View> 
@@ -39,14 +78,19 @@ const Setting = () => {
     </SafeAreaView>
   );
 };
-const Membership_setting =()=>{
+const Membership_setting =({info})=>{
+  const navigation = useNavigation();
+  console.log("사용자 정보 넘겨주기",info)
   // 로그인/회원정보 설정세션 
   return(
     <View style={styles.depart_set_container}>
-
-    <View style={{...styles.set_items, borderBottomWidth:1, borderColor:"lightgrey"}}>
-      <Text>자동로그인</Text>
-    </View>
+    <TouchableOpacity onPress={()=>{
+      navigation.navigate('userInfo', {info: info})
+    }}>
+      <View style={{...styles.set_items, borderBottomWidth:1, borderColor:"lightgrey"}}>
+        <Text>사용자 정보</Text>
+      </View>
+    </TouchableOpacity>
     <TouchableOpacity>
     <View  style={{...styles.set_items, borderBottomWidth:1, borderColor:"lightgrey"}}>
       <Text>비밀번호 변경</Text>

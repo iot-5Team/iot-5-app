@@ -85,7 +85,21 @@ export default function Home({ navigation }) {
     )
   }
   function RenderBookItemList(){
-    if(categoryState != 'AI'){
+    if(categoryState == 'AI'){
+      return (
+        <FlatList
+          ListHeaderComponent={rednerHeader}
+          data={bookList.filter(item => item.bookid >= 37)}  // Adding filter here
+          renderItem={({ item }) => (
+            <BookItem book={item}/>
+          )}
+          keyExtractor={(item) => item.bookid.toString()}  // Ensure key is a string
+          numColumns={3}
+          contentContainerStyle={{ paddingBottom: insets.bottom + 20 }}
+          style={{ alignContent: "space-between" }}  // Corrected the typo in "space-between"
+        ></FlatList>
+      )
+    } else if(categoryState != 'AI'){
       const categoryBooks = allBooks.filter(book => book.theme == categoryState);
       console.log('실행 데이터 ',categoryBooks);
       return(

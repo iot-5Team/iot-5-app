@@ -14,6 +14,11 @@ export default function BookDescription({route}){
     const img = bookImages[book.bookid] || null;
     return (
         <SafeAreaView style={styles.container}>
+             <View style={{width:fullWidth, height:30, justifyContent:"flex-end", marginRight:30,flexDirection:"row"}}>
+                    <TouchableOpacity style={{marginRight:20}}>
+                        <Image source={icon.nolike} style={{width:30,height:30,tintColor:"#bcbcbc"}} />
+                    </TouchableOpacity>
+                </View>
              <View style={styles.iamgeContainer}>
              {
             img!=null?(
@@ -35,7 +40,7 @@ export default function BookDescription({route}){
             </View>
             <View style={styles.textContainer} >
                <Text style={styles.title}>{book.title}</Text>
-               <Text>{book.author}</Text>
+               <Text style={{color:"#999999"}}>{book.author}</Text>
                <View style={styles.publishContainer}>
                     <View style={styles.publishView}>
                         <Text style={styles.detailText}>출판사</Text>

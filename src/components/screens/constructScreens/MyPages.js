@@ -101,6 +101,7 @@ const MyPages = () => {
           fontSize: 20,
           fontWeight: "bold",
           marginLeft: devices_width * 0.05,
+           color:"#937DC2"
         }}
       >
         보관함
