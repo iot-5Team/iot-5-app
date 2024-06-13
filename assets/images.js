@@ -19,3 +19,34 @@ export const icon = {
   riab: require("./icons/right_angle_bracket.png"), //이동 이미지
   noim: require("./icons/noimage.png"), //책이 없을 때 이미지
 };
+
+export const bookImages = {
+  1: require('./BookImg/1.png'),
+  2: require('./BookImg/2.png'),
+  3: require('./BookImg/3.png'),
+  4: require('./BookImg/4.png'),
+  5: require('./BookImg/5.png'),
+  6: require('./BookImg/6.png'),
+  7: require('./BookImg/7.png'),
+  8: require('./BookImg/8.png'),
+  9: require('./BookImg/9.png'),
+  10: require('./BookImg/10.png'),
+  11: require('./BookImg/11.png'),
+  12: require('./BookImg/12.png'),
+  37: require('./BookImg/37.png'),
+  38: require('./BookImg/38.png'),
+  39: require('./BookImg/39.png'),
+  40: require('./BookImg/40.png'),
+  41: require('./BookImg/41.png'),
+  42: require('./BookImg/42.png'),
+  43: require('./BookImg/43.png'),
+  44: require('./BookImg/44.png'),
+  45: require('./BookImg/45.png'),
+  46: require('./BookImg/46.png'),
+  47: require('./BookImg/47.png'),
+  48: require('./BookImg/48.png'),
+  // 계속해서 필요한 모든 이미지 ID에 대해 추가합니다.
+};
+
+export default bookImages;
+

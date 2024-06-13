@@ -8,6 +8,7 @@ import {
 const Setting = () => {
   return (
     <SafeAreaView style={{ flex: 1, alignItems:"center"}}>
+      <View style={{width:fullWidth*0.9, alignItems:"flex-start"}}>
       <Text
         style={{
           fontSize: 20,
@@ -16,6 +17,7 @@ const Setting = () => {
       >
         설정
       </Text>
+      </View>
       <ScrollView>
       <View style={styles.setting_container}>
         <Text style={styles.setting_text}>로그인/회원정보</Text>        

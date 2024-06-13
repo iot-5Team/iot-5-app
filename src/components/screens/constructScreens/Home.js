@@ -13,7 +13,7 @@ import React, { useEffect, useState } from "react";
 import {host, SPport,API_URL} from '@env'
 import { useNavigation } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
-import { bookImage, icon } from "../../../../assets/images.js";
+import { bookImage, icon, bookImages} from "../../../../assets/images.js";
 import Banner from "../../Banner";
 import {
   bookView_height,
@@ -153,7 +153,8 @@ const rednerHeader = () => (
 //책 구성 레이아웃
 const BookItem = ({ book }) => {
   const navigation = useNavigation();
-  
+  const img = bookImages[book.bookid] || null;
+  //const bookImage = bookImages[book.bookid] || icon.noim;
   return (
   <TouchableOpacity onPress={()=>{
     navigation.navigate('bookDes', {book: book})
@@ -174,13 +175,23 @@ const BookItem = ({ book }) => {
         borderRadius: 5,
         alignItems:"center", justifyContent:"center"
         }}>
-        <Image
-          source={icon.noim}
-          style={{
-            width:40,
-            height:40,
-          }}
-        />
+          {
+            img!=null?(
+            <Image
+              source={img}
+              style={{
+                width:bookItem_width,
+                height:bookItem_height,
+              }}
+            />
+            ):(<Image
+              source={icon.noim}
+              style={{
+                width:40,
+                height:40,
+              }}
+            />)
+          }
       </View>
 
       <View style={{ width: bookItem_width, top: 5, height: 16 }}>
