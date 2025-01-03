@@ -6,7 +6,7 @@
 > 이 앱은 reactnative cli    "0.72.4" 버전으로 작성되어있으며 이는 이 이후의 버전과 다르게 빌드 되었습니다.
 
 # Start
-1. git clone https://github.com/ppward/insol.git
+1. git clone [https://github.com/ppward/insol.git](https://github.com/iot-5Team/iot-5-app.git)
 
     npm install 
 
